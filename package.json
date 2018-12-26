@@ -1,0 +1,26 @@
+{
+  "name": "unwhiteme",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Farsash/_unwhiteme.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Farsash/_unwhiteme/issues"
+  },
+  "homepage": "https://github.com/Farsash/_unwhiteme#readme",
+  "devDependencies": {
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "sqlite3": "^4.0.4",
+    "webpack": "^4.28.2",
+    "webpack-cli": "^3.1.2"
+  }
+}
