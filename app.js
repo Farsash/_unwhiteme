@@ -1,28 +1,33 @@
-var express = require('express');
-var app = express();
-var sqlite3 = require('sqlite3').verbose();
-var bodyParser = require('body-parser');
+const express = require('express');
+const app = express();
+    app.set('view engine', 'ejs');
+const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
 
-var storage = multer.diskStorage({
+const storage = multer.diskStorage({
     destination: function (req, file, cb) {
       cb(null, 'uploads/')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + '.jpg')
+      cb(null, 'hello' + path.extname(file.originalname));
     }
-  })
+})
   
-var upload = multer({ storage: storage });
+const upload = multer({ storage: storage });
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
+const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-app.set('view engine', 'ejs');
+
 app.use('/assets', express.static('public'));
 
 app.get('/', function (req, res) {
     res.render('index', { name:req.params.id });
+});
+
+app.get('/3D', function (req, res) {
+    res.render('view');
 });
 
 app.post('/upload', upload.single('avatar'), function (req, res, next) {
