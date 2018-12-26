@@ -17,8 +17,12 @@
   },
   "homepage": "https://github.com/Farsash/_unwhiteme#readme",
   "devDependencies": {
+    "body-parser": "^1.18.3",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-fileupload": "^1.0.0",
+    "multer": "^1.4.1",
+    "path": "^0.12.7",
     "sqlite3": "^4.0.4",
     "webpack": "^4.28.2",
     "webpack-cli": "^3.1.2"
