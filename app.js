@@ -1,46 +1,59 @@
 const express = require('express');
 const app = express();
-    app.set('view engine', 'ejs');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const path = require('path');
+const gm = require('gm').subClass({imageMagick: true});
+
+app.set('view engine', 'ejs');
+app.use('/assets', express.static('public'));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/')
+      cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, 'hello' + path.extname(file.originalname));
+      cb(null, file.fieldname + '-' + Date.now() + '.jpg');
     }
 })
   
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }).single('avatar');
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
-
-app.use('/assets', express.static('public'));
-
-app.get('/', function (req, res) {
-    res.render('index', { name:req.params.id });
+app.get('/', function(req, res) {
+    res.render('index')
 });
 
-app.get('/3D', function (req, res) {
-    res.render('view');
+app.post('/', upload, function (req, res, next) {
+    let h = 512;
+    console.log(req.file);
+    gm(req.file.path.replace('\\', '/'))
+    .resize(h, h)
+    .noProfile()
+    .write('uploads/' + req.file.fieldname + '-' + Date.now(), function (err) {
+        if (!err) {
+            console.log('ok');
+            res.redirect('/');
+        } else {
+            console.log(err);
+        }
+    });
 });
 
+
+
+/*
 app.post('/upload', upload.single('avatar'), function (req, res, next) {
     console.log('res');
 });
 
 
-
-
-
 app.get('/test/:id', function (req, res) {
     res.render('index', { name:req.params.id });
 });
+*/
 
 
 function ReadDB(){
@@ -53,12 +66,6 @@ function ReadDB(){
 
     db.close();
 }
-
-
-
-
-
-
 
 
 app.listen(3000, function () {
