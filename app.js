@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
       cb(null, 'uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, file.fieldname + '-' + Date.now() + '.jpg');
+      cb(null, 'hello.jpg');
     }
 })
   
@@ -28,20 +28,22 @@ app.get('/', function(req, res) {
 
 app.post('/', upload, function (req, res, next) {
     let h = 512;
-    console.log(req.file);
-    gm(req.file.path.replace('\\', '/'))
-    .resize(h, h)
+    console.log('path', path.resolve(__dirname, './uploads/hello.jpg'));
+    gm(path.resolve(__dirname, './uploads/hello.jpg'))
+    .resize(h, h, '^')
+    .gravity('Center')
+    .extent(h, h)
     .noProfile()
-    .write('uploads/' + req.file.fieldname + '-' + Date.now(), function (err) {
+    .write(path.resolve(__dirname, './uploads/min.jpg'), function (err) {
         if (!err) {
             console.log('ok');
             res.redirect('/');
         } else {
             console.log(err);
+            res.redirect('/');
         }
     });
 });
-
 
 
 /*
