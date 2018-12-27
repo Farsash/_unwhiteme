@@ -28,7 +28,7 @@ app.get('/', function(req, res) {
 
 app.post('/', upload, function (req, res, next) {
     let h = 512;
-    console.log('path', path.resolve(__dirname, './uploads/hello.jpg'));
+
     gm(path.resolve(__dirname, './uploads/hello.jpg'))
     .resize(h, h, '^')
     .gravity('Center')
