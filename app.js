@@ -3,6 +3,7 @@ const app = express();
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
 const multer = require('multer');
+const fs = require('fs');
 const path = require('path');
 const gm = require('gm').subClass({imageMagick: true});
 
@@ -11,22 +12,44 @@ app.use('/assets', express.static('public'));
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads')
+      cb(null, 'public/uploads')
     },
     filename: function (req, file, cb) {
-      cb(null, 'hello.jpg');
+        console.log(file);
+      cb(null, file.originalname);
     }
 })
-  
-const upload = multer({ storage: storage }).single('avatar');
+
+
+
+const upload = multer({ storage: storage });
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get('/', function(req, res) {
-    res.render('index')
+    let img = ReadFiles('public/uploads/hello.JPG');
+    res.render('index', { img: 'assets/uploads/hello.JPG'});
 });
 
-app.post('/', upload, function (req, res, next) {
+
+function ReadFiles( path ){
+    fs.readFile(path, function(err, data){
+        if(err){
+            console.error(err);
+            return false;
+        }else{
+            return data;
+        }
+    });
+}
+  
+
+let arr_imgload = [{name: 'avatar', maxCount: 1}, {name: 'image', maxCount: 1}];
+
+app.post('/', upload.fields(arr_imgload), function (req, res, next) {
+
+   
+    /*
     let h = 512;
 
     gm(path.resolve(__dirname, './uploads/hello.jpg'))
@@ -43,6 +66,10 @@ app.post('/', upload, function (req, res, next) {
             res.redirect('/');
         }
     });
+    */
+
+   res.redirect('/');
+   next();
 });
 
 
