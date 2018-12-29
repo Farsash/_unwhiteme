@@ -15,5 +15,11 @@
         <input type="file" name="img" value="">
         <input type="submit" />
     </form>
+    <script>
+        $http.get( "http://127.0.0.1:3000/js").success(function( data ) {
+        $scope.key= data; //from your sample;
+        alert( "Load was performed. " + data );
+        });
+    </script>
 </body>
 </html>

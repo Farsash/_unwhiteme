@@ -26,10 +26,18 @@ const upload = multer({ storage: storage });
 
 const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
+
 app.get('/', function(req, res) {
     let img = ReadFiles('public/uploads/hello.JPG');
     res.render('index', { img: 'assets/uploads/hello.JPG'});
 });
+
+/*
+app.get('/js', function(req, res) {
+    return res.json({ "key" : "hello" });
+});
+
+*/
 
 
 function ReadFiles( path ){
