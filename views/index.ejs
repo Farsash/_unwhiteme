@@ -6,20 +6,33 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body>
+    <div id="_threejs_view"></div>
     <form class="fileupload" action="/" method="post" enctype="multipart/form-data">
         <h1>Upload File Here</h1>
-        <img src=<%=img %>>
-        <p><%=img %></p>
         <input type="file" name="avatar" value="">
         <input type="file" name="image" value="">
         <input type="file" name="img" value="">
         <input type="submit" />
     </form>
     <script>
-        $http.get( "http://127.0.0.1:3000/js").success(function( data ) {
-        $scope.key= data; //from your sample;
-        alert( "Load was performed. " + data );
-        });
+        // 1. Создаём новый объект XMLHttpRequest
+        var xhr = new XMLHttpRequest();
+
+        // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+        xhr.open('GET', '/js', false);
+
+        // 3. Отсылаем запрос
+        xhr.send();
+
+        // 4. Если код ответа сервера не 200, то это ошибка
+        if (xhr.status != 200) {
+            // обработать ошибку
+            alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+        } else {
+        // вывести результат
+            console.log( xhr.responseText ); // responseText -- текст ответа.
+        }
     </script>
+    <script src="/assets/js/main.js"></script>
 </body>
 </html>

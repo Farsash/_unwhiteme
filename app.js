@@ -15,7 +15,6 @@ const storage = multer.diskStorage({
       cb(null, 'public/uploads')
     },
     filename: function (req, file, cb) {
-        console.log(file);
       cb(null, file.originalname);
     }
 })
@@ -28,27 +27,62 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 
 app.get('/', function(req, res) {
-    let img = ReadFiles('public/uploads/hello.JPG');
-    res.render('index', { img: 'assets/uploads/hello.JPG'});
+    let img = ReadFiles('/assets/uploads/hello.JPG');
+    let data_cube = SearchFrameCube();
+    console.log('dsf', data_cube);
+    res.render('edit', { img: 'assets/uploads/hello.JPG'});
 });
 
-/*
-app.get('/js', function(req, res) {
+
+app.get('/inf', function(req, res) {
+    JsonInfoPack();
     return res.json({ "key" : "hello" });
 });
 
-*/
+function JsonInfoPack(){
+
+    let json = {};
+
+    json.ignore_img = SearchFrameCube();
+
+    console.log(json);
+
+}
+
+function SearchFrameCube(){
+
+    let ignore_frame = [];
+
+    for (let i = 1; i < 7; i++) {
+
+        let path = 'public/uploads/' + i + '.jpg';
+
+        fs.readFile(path, function(err, data){
+
+            if(err){
+                ignore_frame.push(i);
+            }
+            
+        });
+
+    }
+
+    console.log(ignore_frame);
+
+    return ignore_frame;
+
+}
 
 
 function ReadFiles( path ){
-    fs.readFile(path, function(err, data){
-        if(err){
-            console.error(err);
-            return false;
-        }else{
-            return data;
-        }
-    });
+        fs.readFile(path, function(err, data){
+            if(err){
+                //console.error(err);
+                return false;
+            }else{
+                return true;
+            }
+        });
 }
   
 
