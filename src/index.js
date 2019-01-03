@@ -9,7 +9,6 @@ const contener = document.getElementById('_threejs_view');
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( 300, 300 );
 
-
 contener.appendChild( renderer.domElement );
 
 let t_load = new THREE.TextureLoader();

@@ -28,24 +28,23 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 app.get('/', function(req, res) {
     let img = ReadFiles('/assets/uploads/hello.JPG');
-    let data_cube = SearchFrameCube();
-    console.log('dsf', data_cube);
     res.render('edit', { img: 'assets/uploads/hello.JPG'});
 });
 
 
 app.get('/inf', function(req, res) {
-    JsonInfoPack();
+
+    let json_report = {};
+
     return res.json({ "key" : "hello" });
+
 });
 
-function JsonInfoPack(){
+async function JsonInfoPack(){
 
     let json = {};
 
-    json.ignore_img = SearchFrameCube();
-
-    console.log(json);
+    json.ignore_img = await SearchFrameCube();
 
 }
 
@@ -60,6 +59,7 @@ function SearchFrameCube(){
         fs.readFile(path, function(err, data){
 
             if(err){
+                console.log(i);
                 ignore_frame.push(i);
             }
             
