@@ -37,7 +37,7 @@ def save_image(file, name):
 
 def save_image_rotation(path, name, angle):
     foo = Image.open(path)
-    foo.rotate(angle).save('static/min/' + name + '.jpg', format="JPEG", quality=70)
+    foo.rotate(angle).save(f"static/min/{User.folder}/{name}.jpg", format="JPEG", quality=70)
     print('Обработка завершена')
 
 
@@ -50,6 +50,11 @@ def save(id):
     if request.method == "POST":
         file = request.files['file']
         save_image(file, id)
+    return redirect('/')
+
+@app.route( "/folder/<id>", methods=["POST", "GET"] )
+def folder_i(id):
+    User.folder = id
     return redirect('/')
 
 @app.route('/edit')
@@ -75,17 +80,27 @@ def read_files_box_tru():
             print('Отсутсвует %(id)s файл' % {'id': n + 1})
     return read
 
+
+
 @app.route("/add")
 def add_l():
     if read_files_box_tru():
+        path = f"static/min/{User.folder}"
+        if os.path.exists(path):
+            print('Папка уже существует')
+        else:
+            os.makedirs(path)
+
         print('Всё успешно загружено')
         for n in range(6):
-            save_image_rotation('static/edit/1.jpg', f"{n + 1}", 90)
+            save_image_rotation(f"static/edit/{n + 1}.jpg", f"{n + 1}", 0)
+            os.remove(f"static/edit/{n + 1}.jpg")
+
 
     else:
         print('Не все объекты есть')
 
-    return render_template("list.html")
+    return redirect('/')
 
 if __name__ == "__main__":
     app.run(debug=True)
