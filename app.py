@@ -19,13 +19,14 @@ def read_data_base():
 
 
 app = Flask(__name__)
+
 MAX_FILE_SIZE = 1024 * 1024 + 1
 
 def save_image(file, name):
 
     def work():
         foo = Image.open(file)
-        foo.save('files/' + name + '.jpg', format="JPEG")
+        foo.save('static/edit/' + name + '.jpg', format="JPEG")
 
     def callback():
         print('Загрузка завершена')
@@ -34,9 +35,9 @@ def save_image(file, name):
     callback()
 
 
-def save_image_rotation(file, name):
-    foo = Image.open(file)
-    foo.rotate(90).save('files/min/' + name + '.jpg', format="JPEG", quality=70)
+def save_image_rotation(path, name, angle):
+    foo = Image.open(path)
+    foo.rotate(angle).save('static/min/' + name + '.jpg', format="JPEG", quality=70)
     print('Обработка завершена')
 
 
@@ -60,13 +61,14 @@ def summary():
 def b_list():
     return render_template("list.html")
 
+
 def read_files_box_tru():
     read = True
     for n in range(6):
-        print(n)
-        path = 'files/%(id)s.jpg,' % {'id': n + 1 }
+        path = "static/edit/%(id)s.jpg" % {"id": n + 1 }
         print(path)
         if os.path.exists(path):
+            print('попал')
             print(os.path.getsize(path))
         else:
             read = False
@@ -77,8 +79,12 @@ def read_files_box_tru():
 def add_l():
     if read_files_box_tru():
         print('Всё успешно загружено')
+        for n in range(6):
+            save_image_rotation('static/edit/1.jpg', f"{n + 1}", 90)
+
     else:
         print('Не все объекты есть')
+
     return render_template("list.html")
 
 if __name__ == "__main__":

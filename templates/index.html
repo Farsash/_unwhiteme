@@ -1,10 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Uploads</title>
+    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet">
 </head>
 <body>
+
     <form action="/save/1" method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
         <button type="submit">Загрузить</button>
@@ -36,5 +38,6 @@
     </form>
 
     <a href="/add"> Добавить </a>
+
 </body>
 </html>
