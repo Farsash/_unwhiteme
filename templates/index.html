@@ -39,9 +39,23 @@
 
     <a href="/add"> Добавить </a>
 
+    <form name="person">
+      <input name="name" value="Виктор">
+      <input name="surname" value="Цой">
+    </form>
+
     <script>
 
+        // создать объект для формы
+        var formData = new FormData();
+        formData.append("patronym", "Робертович");
+        formData.append("dsdd", "dddd");
+        formData.append("dsdfdd", "ddd333");
 
+        // отослать
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "/edit");
+        xhr.send(formData);
 
     </script>
 

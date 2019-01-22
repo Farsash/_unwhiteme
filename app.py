@@ -57,8 +57,11 @@ def folder_i(id):
     User.folder = id
     return redirect('/')
 
-@app.route('/edit')
+@app.route('/edit', methods=["POST", "GET"])
 def summary():
+    if request.method == "POST":
+        print(request.form)
+        print(request.form['patronym'])
     d = {'hello': 'world'}
     return jsonify(d)
 
