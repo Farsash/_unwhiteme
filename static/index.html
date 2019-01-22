@@ -20,17 +20,13 @@
 </head>
 <body>
     <div class="ui">
-        <div><p>1</p><a href="#" id="l_1">left</a><a href="#" id="r_1">right</a></div>
-        <br/>
-        <div><p>2</p><a href="#" id="l_2">left</a><a href="#" id="r_2">right</a></div>
-        <br/>
-        <div><p>3</p><a href="#" id="l_3">left</a><a href="#" id="r_3">right</a></div>
-        <br/>
-        <div><p>4</p><a href="#" id="l_4">left</a><a href="#" id="r_4">right</a></div>
-        <br/>
-        <div><p>5</p><a href="#" id="l_5">left</a><a href="#" id="r_5">right</a></div>
-        <br/>
-        <div><p>5</p><a href="#" id="l_6">left</a><a href="#" id="r_6">right</a></div>
+            <form oninput="result.value=(cm.value/2.54).toFixed(2)">
+                <p>Введите длину в сантиметрах: 
+                <input type="number" name="cm" autofocus></p>
+                <a href="ya.com/" + cm.value> Клик </a>
+            </form>
+        <h3>Куб номер: <span id="ui_folder"></span></h3>
+        <div><a href="#" id="arrow_l">left</a><a href="#" id="arrow_r">right</a></div>
         
     </div>
     <script>

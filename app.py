@@ -6,6 +6,8 @@ from flask import Flask, request, render_template, redirect, jsonify
 class User():
     folder = 1
     reload = False
+    pics = {'1': 0, '2': 0, '3': 90, '4': 0, '5': 0, '6': 0}
+    max_folder = 1;
 
 def read_data_base():
     conn = sqlite3.connect('app.db')
@@ -43,6 +45,7 @@ def save_image_rotation(path, name, angle):
 
 @app.route("/", methods=["POST", "GET"])
 def index():
+    print(User.folder);
     return render_template("index.html")
 
 @app.route( "/save/<id>", methods=["POST", "GET"] )
@@ -52,9 +55,10 @@ def save(id):
         save_image(file, id)
     return redirect('/')
 
-@app.route( "/folder/<id>", methods=["POST", "GET"] )
-def folder_i(id):
-    User.folder = id
+@app.route( "/folder", methods=["POST", "GET"] )
+def folder_i():
+    if request.method == "POST":
+        User.folder = request.form['folder']
     return redirect('/')
 
 @app.route('/edit', methods=["POST", "GET"])
@@ -62,7 +66,7 @@ def summary():
     if request.method == "POST":
         print(request.form)
         print(request.form['patronym'])
-    d = {'hello': 'world'}
+    d = {'max_folder': User.max_folder }
     return jsonify(d)
 
 @app.route("/list")
@@ -96,7 +100,7 @@ def add_l():
 
         print('Всё успешно загружено')
         for n in range(6):
-            save_image_rotation(f"static/edit/{n + 1}.jpg", f"{n + 1}", 0)
+            save_image_rotation(f"static/edit/{n + 1}.jpg", f"{n + 1}", User.pics[f"{n + 1}"])
             os.remove(f"static/edit/{n + 1}.jpg")
 
 

@@ -1,17 +1,26 @@
 import * as THREE from 'three';
+import {box_report, folder} from "./getserver.js";
+
 const OrbitControls = require('three-orbitcontrols')
 
-const box_report = { '1': 0,'2': 0,'3': 0,'4': 0,'5': 0,'6': 0 };
-
 const scene = new THREE.Scene();
+scene.background = new THREE.Color( 0xffffff );
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+camera.position.z = 2;
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+
 document.body.appendChild( renderer.domElement );
 const controls = new OrbitControls(camera, renderer.domElement);
+controls.autoRotate = true;
 controls.update();
 
 const t_loader = new THREE.TextureLoader();
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let INTERSECTED;
+let SELECTELEMENT = '1';
+const select_material = new THREE.MeshBasicMaterial( { color: 0x33ff33, transparent:true, wireframe:true } );
 
 var cube = new THREE.Object3D();
 
@@ -40,10 +49,11 @@ const valCube = [
 for (var i = 0; i < valCube.length; i++) {
    DrawCube(valCube[i], 1, i + 1);
 }
+
 scene.add(cube);
 
 function DrawCube( e, path, el ){
-    let material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: t_loader.load('res/1/' + el + '.jpg') } );
+    let material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: t_loader.load('static/edit/' + el + '.jpg') } );
     let plane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1, 1, 1 ), material );
     plane.name = el.toString();
     plane.position.set(e.position.x,e.position.y,e.position.z);
@@ -51,17 +61,41 @@ function DrawCube( e, path, el ){
     cube.add( plane );
 }
 
-camera.position.z = 5;
 
 
-l_1.onclick = function() { RotationElement("1", false, 'z') };
-r_1.onclick = function() { RotationElement("1", true, 'z') };
 
-l_2.onclick = function() { RotationElement("2", false, 'z') };
-r_2.onclick = function() { RotationElement("2", true, 'z') };
+arrow_l.onclick = function() { RotationElement(SELECTELEMENT, false, 'z') };
+arrow_r.onclick = function() { RotationElement(SELECTELEMENT, true, 'z') };
 
-l_3.onclick = function() { RotationElement("3", false, 'z') };
-r_3.onclick = function() { RotationElement("3", true, 'z') };
+let ui_fldr = document.getElementById('ui_folder');
+ui_fldr.innerHTML = '1';
+
+
+
+window.addEventListener( 'mousemove', onMouseMove, false );
+window.addEventListener( 'click', onMouseDown, false );
+
+let select_object;
+
+function onMouseDown() {
+    
+    if(INTERSECTED){
+        scene.remove(select_object);
+        select_object = INTERSECTED.clone();
+        select_object.material = select_material;
+        scene.add(select_object);
+        SELECTELEMENT = INTERSECTED.name;
+        console.log(SELECTELEMENT);
+    }
+
+}
+
+function onMouseMove( event ) {
+
+	mouse.x = ( event.clientX / window.innerWidth ) * 2 - 1;
+	mouse.y = - ( event.clientY / window.innerHeight ) * 2 + 1;
+
+}
 
 function RotationElement( name, right, axis ){
     let el = scene.getObjectByName( name );
@@ -76,6 +110,30 @@ function RotationElement( name, right, axis ){
 
 var animate = function () {
     controls.update();
+
+	// update the picking ray with the camera and mouse position
+	raycaster.setFromCamera( mouse, camera );
+
+	// calculate objects intersecting the picking ray
+	var intersects = raycaster.intersectObjects( cube.children );
+
+    if ( intersects.length > 0 ) {
+        if ( INTERSECTED != intersects[ 0 ].object ) {
+            
+            if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+            INTERSECTED = intersects[ 0 ].object;
+            INTERSECTED.currentHex = INTERSECTED.material.color.getHex();
+            INTERSECTED.material.color.setHex( 0x007700 );
+           
+        }
+    } else {
+        
+        if ( INTERSECTED ) INTERSECTED.material.color.setHex( INTERSECTED.currentHex );
+        INTERSECTED = null;
+        
+    }
+
+
     requestAnimationFrame( animate );
     renderer.render( scene, camera );
 };

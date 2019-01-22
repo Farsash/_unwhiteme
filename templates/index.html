@@ -7,6 +7,17 @@
 </head>
 <body>
 
+    <div class="ui">
+            <form oninput="result.value=(cm.value/2.54).toFixed(2)">
+                <p>Введите длину в сантиметрах:
+                <input type="number" name="cm" autofocus></p>
+                <a href="ya.com/" + cm.value> Клик </a>
+            </form>
+        <h3>Куб номер: <span id="ui_folder"></span></h3>
+        <div><a href="#" id="arrow_l">left</a><a href="#" id="arrow_r">right</a></div>
+
+    </div>
+
     <form action="/save/1" method="POST" enctype="multipart/form-data">
         <input type="file" name="file">
         <button type="submit">Загрузить</button>
@@ -39,12 +50,38 @@
 
     <a href="/add"> Добавить </a>
 
+
+    <form action="/folder" method="POST" enctype="multipart/form-data">
+      <span>Перейти на другой куб</span>
+      <input type="number" name="folder" max="3" min="0" autofocus></p>
+      <button type="submit">Загрузить</button>
+    </form>
+
     <form name="person">
       <input name="name" value="Виктор">
       <input name="surname" value="Цой">
     </form>
 
     <script>
+
+
+
+        var xhr = new XMLHttpRequest();
+
+        // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
+        xhr.open('GET', '/edit', false);
+
+        // 3. Отсылаем запрос
+        xhr.send();
+
+        // 4. Если код ответа сервера не 200, то это ошибка
+        if (xhr.status != 200) {
+          // обработать ошибку
+          alert( xhr.status + ': ' + xhr.statusText ); // пример вывода: 404: Not Found
+        } else {
+          // вывести результат
+          console.log( xhr.responseText ); // responseText -- текст ответа.
+        }
 
         // создать объект для формы
         var formData = new FormData();
@@ -58,6 +95,8 @@
         xhr.send(formData);
 
     </script>
+
+    <script src="{{ url_for('static', filename='dist/main.js')}}"></script>
 
 </body>
 </html>
