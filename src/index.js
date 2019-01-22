@@ -1,5 +1,9 @@
 import * as THREE from 'three';
-import {box_report, folder} from "./getserver.js";
+import { folder, To_send} from "./getserver.js";
+
+const SendServer = new To_send();
+
+
 
 const OrbitControls = require('three-orbitcontrols')
 
@@ -53,7 +57,7 @@ for (var i = 0; i < valCube.length; i++) {
 scene.add(cube);
 
 function DrawCube( e, path, el ){
-    let material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: t_loader.load('static/edit/' + el + '.jpg') } );
+    let material = new THREE.MeshBasicMaterial( { color: 0xffffff, map: t_loader.load('../static/edit/' + el + '.jpg') } );
     let plane = new THREE.Mesh( new THREE.PlaneBufferGeometry( 1, 1, 1 ), material );
     plane.name = el.toString();
     plane.position.set(e.position.x,e.position.y,e.position.z);
@@ -104,8 +108,9 @@ function RotationElement( name, right, axis ){
     } else {
         el.rotation[axis] -= 90*Math.PI/180;
     }
-    box_report[name] = el.rotation[axis] / Math.PI * 180;
-    console.log(box_report);
+    SendServer.box_report[name] = el.rotation[axis] / Math.PI * 180;
+    console.log(SendServer.box_report);
+    SendServer.send();
 }
 
 var animate = function () {

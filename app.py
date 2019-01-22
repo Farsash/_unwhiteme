@@ -64,8 +64,13 @@ def folder_i():
 @app.route('/edit', methods=["POST", "GET"])
 def summary():
     if request.method == "POST":
-        print(request.form)
-        print(request.form['patronym'])
+        User.pics['1'] = int(request.form['1'])
+        User.pics['2'] = int(request.form['2'])
+        User.pics['3'] = int(request.form['3'])
+        User.pics['4'] = int(request.form['4'])
+        User.pics['5'] = int(request.form['5'])
+        User.pics['6'] = int(request.form['6'])
+        print(User.pics)
     d = {'max_folder': User.max_folder }
     return jsonify(d)
 
@@ -98,10 +103,11 @@ def add_l():
         else:
             os.makedirs(path)
 
-        print('Всё успешно загружено')
         for n in range(6):
             save_image_rotation(f"static/edit/{n + 1}.jpg", f"{n + 1}", User.pics[f"{n + 1}"])
             os.remove(f"static/edit/{n + 1}.jpg")
+
+        print('Всё успешно загружено')
 
 
     else:

@@ -3,69 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>Uploads</title>
-    <link href="{{ url_for('static', filename='style.css')}}" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
 </head>
 <body>
 
-    <div class="ui">
-            <form oninput="result.value=(cm.value/2.54).toFixed(2)">
-                <p>Введите длину в сантиметрах:
-                <input type="number" name="cm" autofocus></p>
-                <a href="ya.com/" + cm.value> Клик </a>
-            </form>
+
+    <div class="load_ui">
+
         <h3>Куб номер: <span id="ui_folder"></span></h3>
         <div><a href="#" id="arrow_l">left</a><a href="#" id="arrow_r">right</a></div>
 
+        <form action="/save/1" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <form action="/save/2" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <form action="/save/3" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <form action="/save/4" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <form action="/save/5" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <form action="/save/6" method="POST" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Загрузить</button>
+        </form>
+
+        <a href="/add" id="add_server"> Добавить </a>
+
+        <form action="/folder" method="POST" enctype="multipart/form-data">
+            <span>Перейти на другой куб</span>
+            <input type="number" name="folder" max="3" min="0" autofocus></p>
+            <button type="submit"> Перейти </button>
+          </form>
+
     </div>
 
-    <form action="/save/1" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <form action="/save/2" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <form action="/save/3" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <form action="/save/4" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <form action="/save/5" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <form action="/save/6" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <button type="submit">Загрузить</button>
-    </form>
-
-    <a href="/add"> Добавить </a>
-
-
-    <form action="/folder" method="POST" enctype="multipart/form-data">
-      <span>Перейти на другой куб</span>
-      <input type="number" name="folder" max="3" min="0" autofocus></p>
-      <button type="submit">Загрузить</button>
-    </form>
-
-    <form name="person">
-      <input name="name" value="Виктор">
-      <input name="surname" value="Цой">
-    </form>
 
     <script>
 
 
-
+/*
         var xhr = new XMLHttpRequest();
 
         // 2. Конфигурируем его: GET-запрос на URL 'phones.json'
@@ -93,10 +85,11 @@
         var xhr = new XMLHttpRequest();
         xhr.open("POST", "/edit");
         xhr.send(formData);
+        */
 
     </script>
 
-    <script src="{{ url_for('static', filename='dist/main.js')}}"></script>
+    <script src="/static/dist/main.js"></script>
 
 </body>
 </html>

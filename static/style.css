@@ -1,3 +1,5 @@
-h3 {
-    color:red;
+.load_ui {
+    position: fixed;
+    top:30px;
+    left:40px;
 }
